@@ -18,5 +18,5 @@ def get_config_str():
     '''
     Reads the config.py module (located one folder-level up from this file) into a string
     '''
-    return "\n".join("{0} : {1}".format(k, v) for (k, v) in config.__dict__.iteritems() if not k.startswith("__"))
+    return "\n".join("{0} : {1}".format(k, v) for (k, v) in smellie_config.__dict__.iteritems() if not k.startswith("__"))
 

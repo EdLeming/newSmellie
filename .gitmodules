@@ -1,0 +1,6 @@
+[submodule "Adafruit-Motor-shield-library"]
+	path = Adafruit-Motor-shield-library
+	url = https://github.com/adafruit/Adafruit-Motor-shield-library
+[submodule "AccelStepper"]
+	path = AccelStepper
+	url = https://github.com/adafruit/AccelStepper

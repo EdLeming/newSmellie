@@ -6,7 +6,7 @@ import logging, time, datetime
 from smellie import spectrometer
 spec = spectrometer.Spectrometer()
 
-logging.basicConfig(filename=r'C:\SMELLIE\software\newSmellie\testing\test_spectrometer.log', filemode="a", level=logging.DEBUG)
+logging.basicConfig(filename=r'C:\SMELLIE\logs\test_spectrometer.log', filemode="a", level=logging.DEBUG)
 console = logging.StreamHandler() #print logger to console
 console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)
@@ -15,7 +15,7 @@ npass = 0
 nfail = 0
 
 try:
-    logging.debug( "Begin Testing SMELLIE Spectrometer. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%M-%d %H:%M:%S') ) )   
+    logging.debug( "Begin Testing SMELLIE Spectrometer. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') ) )   
     
     #test current state. (in turn tests many of the getter functions).
     spec.open_spectrometer()

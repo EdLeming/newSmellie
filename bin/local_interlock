@@ -1,16 +1,22 @@
 #!../venv/bin/python
 """
-Keep the interlock closed  with pulses along the serial port from this computer
+Keep the interlock closed with pulses along the serial port from this computer. Begin with a re-arm of the interlock. 
 """
 
-from serial import Serial
+from smellie import interlock
 from smellie_config import INTERLOCK_SERIAL_PORT, INTERLOCK_BAUD_RATE
 
-interlock_serial = Serial(INTERLOCK_SERIAL_PORT, INTERLOCK_BAUD_RATE)
 try:
+    il = interlock.Interlock()
+    il.port_open()
+    il.set_arm()
     while True:
-        interlock_serial.write("a\r\n")
-except KeyboardInterrupt:
-    print "interlockSMELLIE::Keyboard Interrupt has locked the Laser. Please Restart"
-    interlockSerial.close()
+        il.send_keepalive()
 
+except KeyboardInterrupt:
+    print "Keyboard interrupt has opened the interlock and locked the lasers."
+    raise
+    
+finally:
+    il.set_disarm()
+    il.port_close()

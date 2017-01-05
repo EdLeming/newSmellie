@@ -33,7 +33,7 @@ def get_pulse_parameters(dev_id, slot_id):
     return freq.value, pulse_mode.value, head_type.value
 
 @raise_on_error_code
-def set_pulse_parameters(dev_id, slot_id):
+def set_pulse_parameters(dev_id, slot_id, freq_mode='EXT'):
     """
     Set the pulse parameters for the SLM module
     The original C-API has a parameter `bPulseMode` = 1 for pulsing, 0 for continuous light).  Using 0 can cause damage to the laser heads and so bPulseMode is hard coded to 1.    
@@ -49,7 +49,15 @@ def set_pulse_parameters(dev_id, slot_id):
     #slot_id = slot_id[""]
     
     # The last two parameters are the pulse and frequency modes - DO NOT CHANGE  (see above and __init__.py)!
-    dll.SEPIA2_SLM_SetPulseParameters(dev_id, slot_id, c_int32(6), c_ubyte(1))
+    #dll.SEPIA2_SLM_SetPulseParameters(dev_id, slot_id, c_int32(6), c_ubyte(1))
+    freq_mode_number = 6
+    if freq_mode == 'INT': freq_mode_number = 5
+        
+    if (freq_mode_number!=6 or freq_mode_number!=5):
+        dll.SEPIA2_SLM_SetPulseParameters(dev_id, slot_id, freq_mode_number, c_ubyte(1))
+    else:
+        raise SepiaLogicError("Freq mode must either be 'EXT' (default) or 'INT' (rising edge external trigger or internally generated 2.5MHz trigger.)")
+    
 
 @raise_on_error_code
 def decode_freq_trig_mode(freq_mode):
@@ -102,7 +110,7 @@ def set_intensity_fine_step(dev_id, slot_id, intensity):
     :param intensity: the requested laser head intensity
     :type intensity: int
     """
-    if not intensity in xrange(int(1e3)):
+    if not intensity in xrange(int(1e3+1)):
         raise SepiaLogicError("Cannot set the intensity fine step - must be an integer between 0 and 1000")
     dll.SEPIA2_SLM_SetIntensityFineStep(dev_id, slot_id, intensity)
 

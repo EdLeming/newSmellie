@@ -46,7 +46,7 @@ def set_laser_soft_lock(dev_id, slot_id, contents):
 def get_laser_locked(dev_id, slot_id):
     """
     Get the state of the laser power-line
-    This will return '1' if the power is off, if the soft-lock is on, or if the hard-lock (key on SEPIA) is on. 
+    This will return 'True' if the power is off, if the soft-lock is on, if the hard-lock (key on SEPIA) is on or the SMELLIE interlock is OPEN (otherwise will be 'False') i.e. True = Locked & False = Unlocked.
 
     :param dev_id: the SEPIA device number, ordered from 0
     :type dev_id: int
@@ -59,4 +59,4 @@ def get_laser_locked(dev_id, slot_id):
     """
     state = c_ubyte()
     dll.SEPIA2_SCM_GetLaserLocked(dev_id, slot_id, byref(state) )
-    return state.value
+    return bool(state.value)

@@ -6,7 +6,7 @@ import logging, time, datetime
 from smellie import power_meter
 pm = power_meter.PowerMeter()
 
-logging.basicConfig(filename='test_power_meter.log', filemode="a", level=logging.DEBUG)
+logging.basicConfig(filename='C:\SMELLIE\logs\test_power_meter.log', filemode="a", level=logging.DEBUG)
 console = logging.StreamHandler() #print logger to console
 console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)
@@ -16,10 +16,12 @@ nfail = 0
 
 try:
 
-    logging.debug( "Begin Testing SMELLIE Power Meter. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%M-%d %H:%M:%S') ) )   
+    logging.debug( "Begin Testing SMELLIE Power Meter. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') ) ) 
+
+    #open USB connection
+    pm.port_open()  
     
-    #test current state. (in turn tests many of the getter functions).
-    pm.port_open() #raises exception if not opened correctly
+    #test current state.
     logging.debug( "Current state: {}".format( pm.current_state() ) )
 
     if type(pm.get_power()) == float: 
@@ -50,6 +52,7 @@ try:
         logging.debug("Test FAILED")
         nfail+=1
     
+    #close USB connection
     pm.port_close()
     
     logging.debug( "Finished Testing SMELLIE Power Meter, pass: {}/{}, fail:{}/{}".format(npass,npass+nfail,nfail,npass+nfail) )

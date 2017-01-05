@@ -24,7 +24,7 @@ def get_fwr_version(dev_id):
     return return_string.value
 
 @raise_on_error_code
-def get_module_map(dev_id, do_soft_restart = True):
+def get_module_map(dev_id, do_soft_restart = False):
     """
     Fetch the firmware mapping for the .dll - this must be called before using the laser head
     If 'do_soft_restart' is set to False, a power on/off is required to ensure an up to date mapping (consult page 11 of documentation).

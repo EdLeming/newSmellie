@@ -1,6 +1,0 @@
-DEBUG:root:Begin Testing SMELLIE Fibre Switch. 2016-13-28 10:13:44
-DEBUG:root:Current state: FibreSwitch:: Port:8, Baudrate:57600, Type:mol5x14, Firmware:v8.07, Channel:70
-DEBUG:root:Test setting channel: 69, (5,13)
-DEBUG:root:Restore original channel: 70, (5,14)
-DEBUG:root:Test PASSED
-DEBUG:root:Finished Testing SMELLIE Fibre Switch, pass: 1/1, fail:0/1

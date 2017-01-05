@@ -1,4 +1,4 @@
-from smellie_config import FIBRE_SWITCH_SERIAL_PORT, FIBRE_SWITCH_BAUD_RATE, FIBRE_SWITCH_WAIT_TIME
+from smellie_config import FIBRE_SWITCH_4CHAN_SERIAL_PORT, FIBRE_SWITCH_4CHAN_BAUD_RATE, FIBRE_SWITCH_4CHAN_WAIT_TIME
 from serial import Serial
 from time import sleep
 from smellie.smellie_logger import SMELLIELogger
@@ -19,39 +19,18 @@ class FibreSwitchHWError(Exception):
     """
     pass
 
-def find_global_channel_number(in_chan, out_chan):
-    """
-    Convert a specific combination of (input channel, output channel) into a global Fibre Switch channel number
-
-    :returns: global channel
-    :type global channel: int
-    """
-    return ((in_chan - 1) * 14) + out_chan
-
-def find_input_output_number(chan):
-    """
-    Convert a global Fibre Switch channel number into a specific combination of (input channel, output channel)
-
-    :returns: global channel
-    :type global channel: int
-    """
-    input_channel = int( (chan+7)/14.1 )//1
-    if (chan%14==0): output_channel = 14
-    else: output_channel = chan%14
-    return input_channel, output_channel
-
 def check_global_channel_number(channel_num):
     """
-    Check the validity of the desired global Fibre Switch channel number, which must be at most = 70 (input channel = [1, 5], output channel = [1, 14])
+    Check the validity of the desired global Fibre Switch channel number, which must be at most 4
 
     :param channel_num: the global channel number to check
 
-    :raises: :class:`.FibreSwitchLogicError` if the channel is unphysical, i.e. not between 1 and 70
+    :raises: :class:`.FibreSwitchLogicError` if the channel is unphysical, i.e. not between 1 and 4
     """
-    if not (channel_num-1) in xrange(70):
-        raise FibreSwitchLogicError("Invalid Fibre Switch channel {0} requested ... must be 1 - 70, or input = 1 - 5 and output = 1 - 14")
+    if not (channel_num-1) in xrange(4):
+        raise FibreSwitchLogicError("Invalid Fibre Switch channel {0} requested ... must be 1 - 4")
 
-class FibreSwitch(object):
+class FibreSwitch4Chan(object):
     """
     Controls the Fibre Switch via commands sent down a serial port.
     The port number and baud rate are set in config.py .
@@ -67,7 +46,7 @@ class FibreSwitch(object):
         """
         SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.port_open()')
         if not self.isConnected:
-            self.serial = Serial(FIBRE_SWITCH_SERIAL_PORT, FIBRE_SWITCH_BAUD_RATE, timeout=1)
+            self.serial = Serial(FIBRE_SWITCH_4CHAN_SERIAL_PORT, FIBRE_SWITCH_4CHAN_BAUD_RATE, timeout=1)
             sleep(1)
             self.isConnected = True
             self.flush()
@@ -95,7 +74,7 @@ class FibreSwitch(object):
         SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.execute_message({})'.format(msg))
         if self.isConnected:
             self.serial.write(msg+"\r\n")
-            sleep(FIBRE_SWITCH_WAIT_TIME)
+            sleep(FIBRE_SWITCH_4CHAN_WAIT_TIME)
         else:
             raise FibreSwitchLogicError("Fibre Switch port not open.") 
         
@@ -108,9 +87,9 @@ class FibreSwitch(object):
         """
         if self.isConnected:
             readback = self.serial.readline()
-            sleep(FIBRE_SWITCH_WAIT_TIME)
+            sleep(FIBRE_SWITCH_4CHAN_WAIT_TIME)
             SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.read_back = {}'.format(readback))
-            return str(readback).replace('\r\n','')
+            return readback
         else:
             raise FibreSwitchLogicError("Fibre Switch port not open.")
             return 0
@@ -123,7 +102,7 @@ class FibreSwitch(object):
             self.serial.flushInput()
             self.serial.flushOutput()
         else:
-            raise FibreSwitchLogicError("Interlock port not open.")   
+            raise FibreSwitchLogicError("Interlock port not open.")  
             
     def set_global_channel_number(self, channel_num):
         """
@@ -154,31 +133,6 @@ class FibreSwitch(object):
         channel_num = int(str(self.read_back()).replace('\n',' ').replace('\r','').replace(' ',''))
         SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.get_global_channel_number() = {}\n'.format(str(channel_num)))
         return channel_num
-        
-    def get_input_output_channel_number(self):
-        """
-        Poll the Fibre Switch for the current input and output channels
-
-        :returns: {input channel, output channel}
-        :type current channel: string
-        """
-        input_channel, output_channel = find_input_output_number(self.get_global_channel_number())
-        SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.get_input_output_channel_number() = input:{}, output:{}'.format(input_channel,output_channel))
-        return input_channel, output_channel
-
-    def set_io_channel_numbers(self, in_channel, out_channel):
-        """
-        Set the global Fibre Switch channel number using explicit input and output channels
-
-        :param in_channel: requested input channel
-        :param out_channel: requested output channel
-        
-        :raises: :class:`.FibreSwitchLogicError` if the requested global channel number is unphysical
-
-        :raises: :class:`.FibreSwitchHWError` if the command is unsuccessful
-        """
-        SMELLIELogger.debug('SNODROP DEBUG: FibreSwitch.set_io_channel_numbers({},{})'.format(in_channel, out_channel))
-        self.set_global_channel_number(find_global_channel_number(in_channel, out_channel))
 
     def get_fwr_version(self):
         """

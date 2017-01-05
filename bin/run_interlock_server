@@ -1,24 +1,19 @@
 #!../venv/bin/python
 """
-Listen on an xmlrpc server for pulses to forward onto the interlock along a serial port
+Register the functions from the interlock class in an xmlrpc server to listen and send pulses onto the interlock
 """
 from SimpleXMLRPCServer import SimpleXMLRPCServer
-from serial import Serial
+from smellie import interlock
 from smellie_config import INTERLOCK_SERIAL_PORT, INTERLOCK_BAUD_RATE, INTERLOCK_SERVER_PORT
 
-interlock_serial = Serial(INTERLOCK_SERIAL_PORT, INTERLOCK_BAUD_RATE)
-def keep_alive_pulse():
-    """
-    Send a keep alive pulse to the interlock along the serial port
-    """
-    interlock_serial.write("a\r\n")
-
-
 server = SimpleXMLRPCServer("0.0.0.0", INTERLOCK_SERVER_PORT)
-server.register_function(keep_alive_pulse)
-server.register_introspection_functions()
 
 try:
+    il = interlock.Interlock()
+    server.register_instance(il) 
+    server.register_introspection_functions()
     server.serve_forever()
+    
 except KeyboardInterruptError:
-    print "Server terminated by keyboard interrupt"
+    print "Interlock server terminated by keyboard interrupt"
+    raise

@@ -2,8 +2,17 @@
 Processes exceptions thrown by the software, converting them to error strings to be sent over the server
 """
 from functools import wraps
+from smellie.smellie_logger import SMELLIELogger
 
 HANDLED_EXCEPTIONS = []
+
+def log_exception(exception_string):
+    """
+    Logs exceptions to logging server at highest level (warn).
+
+    :param exception: The exception to log
+    """
+    SMELLIELogger.warn(exception_string)
 
 def process_exception(exception):
     """
@@ -32,5 +41,7 @@ def str_wrap_exceptions(orig_function):
         try:
             return orig_function(*args, **kwargs)
         except Exception as e:
-            return process_exception(e)        
-    return modified_function    
+            e_string = process_exception(e)
+            log_exception(e_string)
+            return e_string
+    return modified_function

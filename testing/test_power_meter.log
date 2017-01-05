@@ -1,7 +1,0 @@
-DEBUG:root:Begin Testing SMELLIE Power Meter. 2016-07-01 21:07:32
-DEBUG:root:Current state: Get Power: 2.18831703e-10, Get Beam Diameter: 9.5, Get Wavelength: 450.0, Get Dark Offset: -2.63168758e-11
-DEBUG:root:Test PASSED
-DEBUG:root:Test setting wavelength: 460.0
-DEBUG:root:Restore original channel: 450.0
-DEBUG:root:Test PASSED
-DEBUG:root:Finished Testing SMELLIE Power Meter, pass: 2/2, fail:0/2

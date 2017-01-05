@@ -6,7 +6,7 @@ import logging, time, datetime
 from smellie import laser_switch
 ls = laser_switch.LaserSwitch()
 
-logging.basicConfig(filename='test_laser_switch.log', filemode="a", level=logging.DEBUG)
+logging.basicConfig(filename='C:/SMELLIE/logs/test_laser_switch.log', filemode="a", level=logging.DEBUG)
 console = logging.StreamHandler() #print logger to console
 console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)
@@ -16,7 +16,7 @@ nfail = 0
 
 try:
 
-    logging.debug( "Begin Testing SMELLIE Laser Switch. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%M-%d %H:%M:%S') ) )   
+    logging.debug( "Begin Testing SMELLIE Laser Switch. {}".format( datetime.datetime.fromtimestamp(time.time()).strftime('%Y-%m-%d %H:%M:%S') ) )
     #test current state. (in turn tests many of the getter functions).
     logging.debug( "Current state: {}".format( ls.current_state() ) )
 

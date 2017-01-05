@@ -1,4 +1,0 @@
-DEBUG:root:Begin Testing SMELLIE Spectrometer. 2016-36-02 20:36:51
-DEBUG:root:Current state: Spectrometer Identity (name, Firmware, SerialNumber): ('USB2000+', '4.01.0 ', 'FLMS01281')
-DEBUG:root:Test PASSED
-DEBUG:root:Finished Testing SMELLIE Spectrometer, pass: 1/1, fail:0/1
