@@ -1,5 +1,5 @@
 # Dummy mode just prints the signature of calls to server functions
-DUMMY_MODE = False
+DUMMY_MODE = True
 
 # SEPIA Laser Driver
 #"C:\Program Files\PicoQuant\GenericLaserDriver\Sepia2_Lib.dll"
