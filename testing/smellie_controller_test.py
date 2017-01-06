@@ -5,7 +5,7 @@
 import logging, time, datetime
 from smellie.smellie_controller import SmellieController
 
-logging.basicConfig(filename=r'C:\SMELLIE\logs\test_smellie_controller.log', filemode="a", level=logging.DEBUG)
+logging.basicConfig(filename=r'C:\SMELLIE\logs\testing\test_smellie_controller.log', filemode="a", level=logging.DEBUG)
 console = logging.StreamHandler() #print logger to console
 console.setLevel(logging.DEBUG)
 logging.getLogger('').addHandler(console)

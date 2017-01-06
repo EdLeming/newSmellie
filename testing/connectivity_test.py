@@ -19,7 +19,7 @@ class ConnectivityTest(object):
         self.pq = pq_driver.PQDriver()
         self.il = interlock.Interlock()
         self.pm = power_meter.PowerMeter()
-        self.sk = superk_driver.SuperkDriver()
+        self.sk = superk_driver.SuperKDriver()
         self.sp = spectrometer.Spectrometer()
 
     def __exit__(self, type, value, traceback):
@@ -41,7 +41,7 @@ class ConnectivityTest(object):
                 interlock.InterlockLogicError, 
                 pq_driver.PQDriverLogicError,
                 power_meter.PowerMeterLogicError,
-                superk_driver.SuperkDriverLogicError,
+                superk_driver.SuperKDriverLogicError,
                 spectrometer.SpectrometerLogicError):
             pass
 

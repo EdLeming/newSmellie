@@ -156,8 +156,8 @@ def getVariaStatusBits(COMPort):
     dll.GetVariaStatusBits(COMPort, byref(bitMaskDecimal), bitCluster)  
     #printVariaStatusBits(bitCluster) #for use in debugging 
     
-    #check for errors:
-    if (bitCluster.bit5 == 1 or bitCluster.bit6 == 1 or bitCluster.bit9 == 1 or bitCluster.bit12 == 1 or bitCluster.bit13 == 1 or bitCluster.bit14 == 1 or bitCluster.bit15 == 1):
+    #check for errors (not filter movement, that's checked elsewhere):
+    if (bitCluster.bit5 == 1 or bitCluster.bit6 == 1 or bitCluster.bit9 == 1 or bitCluster.bit15 == 1):
         if (bitCluster.bit9 == 1):
             raise SuperKHWError('ERROR (superk.getVariaStatusBits). Error from shutter sensor on Varia output. Check shutter.')          
         else:

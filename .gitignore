@@ -6,6 +6,6 @@ venv/*
 hiredis*
 doc/_build/*
 smellie.egg-info
-venv/*
+venv*/*
 dist
 build/*
