@@ -132,7 +132,6 @@ if __name__ == "__main__":
 
     # Save doc to the db
     newFileName = '{}.json'.format(args.run_name)
-    print newFileName
     with open(newFileName, "w") as f:
         json.dump(document, f, sort_keys=True, indent=4, separators=(',', ': '))
 
@@ -153,5 +152,9 @@ if __name__ == "__main__":
                     print "Exiting..."
                     sys.exit()
 
+        # If no existing docs, save this one
+        _id, _rev = db.save(document)
+        print "Run document {} saved to {}/_utils/database.html?{}, search for it with doc_id = {}".format(document["run_info"]["run_name"], args.server, args.database, _id)
+        sys.exit()
 
     print "File {} created, but not pushed".format(newFileName)
