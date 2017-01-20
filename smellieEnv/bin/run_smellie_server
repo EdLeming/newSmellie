@@ -1,4 +1,0 @@
-#!/Volumes/LocalDataHD/GDrive/SNO+/Code/newSmellie/smellieEnv/bin/python
-# EASY-INSTALL-SCRIPT: 'smellie==1.0.1','run_smellie_server'
-__requires__ = 'smellie==1.0.1'
-__import__('pkg_resources').run_script('smellie==1.0.1', 'run_smellie_server')
